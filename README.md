@@ -2,6 +2,10 @@
 
 `zsm` is a small terminal session manager for [Zellij](https://zellij.dev/) backed by [zoxide](https://github.com/ajeetdsouza/zoxide). It gives you one fuzzy-searchable list of live Zellij sessions, resurrectable sessions, and frequently used directories, then attaches to an existing session or creates one in the selected directory.
 
+## Demo
+
+https://github.com/user-attachments/assets/a7d2f5ff-ee25-40ad-a1a6-d012054261f9
+
 ## Features
 
 - Fuzzy search across Zellij sessions and zoxide directories.
