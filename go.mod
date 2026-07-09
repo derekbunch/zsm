@@ -1,4 +1,4 @@
-module zsm
+module github.com/derekbunch/zsm
 
 go 1.26
 
@@ -10,6 +10,7 @@ require (
 	github.com/charmbracelet/x/ansi v0.11.6
 	github.com/mattn/go-runewidth v0.0.21
 	github.com/sahilm/fuzzy v0.1.1
+	github.com/sblinch/kdl-go v0.0.0-20260121213736-8b7053306ca6
 )
 
 require (
@@ -24,7 +25,6 @@ require (
 	github.com/lucasb-eyer/go-colorful v1.3.0 // indirect
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/sblinch/kdl-go v0.0.0-20260121213736-8b7053306ca6 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.42.0 // indirect

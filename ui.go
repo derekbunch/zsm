@@ -13,7 +13,7 @@ import (
 	"github.com/mattn/go-runewidth"
 	"github.com/sahilm/fuzzy"
 
-	"zsm/icons"
+	"github.com/derekbunch/zsm/icons"
 )
 
 // mode represents the current UI state.
@@ -29,28 +29,28 @@ const (
 )
 
 type model struct {
-	items           []Item          // all items (sessions + directories)
-	filtered        []Item          // items matching the current filter
-	cursor          int             // position in filtered list
-	filter          textinput.Model // fuzzy search input
-	input           textinput.Model // rename/custom name input
-	mode            mode            // current UI state
-	theme           Theme           // color config (kept for re-building styles on bg change)
-	styles          styles          // theme-aware styles
-	width           int             // terminal width
-	height          int             // terminal height
-	action          func() error    // post-exit action (attach/create)
-	chosen          Item            // the item the user selected (so main.go can report on it)
-	status          string          // transient status message shown under the header (errors, etc.)
-	layout          string          // zellij layout to use
-	maxHeight       int             // max visible items (0 = fill terminal)
-	maxWidth        int             // max width (0 = fill terminal)
-	quitting        bool            // set on exit to clear the UI
-	previews        map[Item]string // cached preview content per item
-	previewScroll   int             // current line offset for vim-style scrolling
-	previewPosition string          // "top" | "bottom" | "left" | "right" | "none"
-	previewCfg      PreviewConfig   // configurable preview command (see config.go)
-	showScore       bool            // whether to display zoxide score in list rows
+	items           []Item            // all items (sessions + directories)
+	filtered        []Item            // items matching the current filter
+	cursor          int               // position in filtered list
+	filter          textinput.Model   // fuzzy search input
+	input           textinput.Model   // rename/custom name input
+	mode            mode              // current UI state
+	theme           Theme             // color config (kept for re-building styles on bg change)
+	styles          styles            // theme-aware styles
+	width           int               // terminal width
+	height          int               // terminal height
+	action          func() error      // post-exit action (attach/create)
+	chosen          Item              // the item the user selected (so main.go can report on it)
+	status          string            // transient status message shown under the header (errors, etc.)
+	layout          string            // zellij layout to use
+	maxHeight       int               // max visible items (0 = fill terminal)
+	maxWidth        int               // max width (0 = fill terminal)
+	quitting        bool              // set on exit to clear the UI
+	previews        map[Item]string   // cached preview content per item
+	previewScroll   int               // current line offset for vim-style scrolling
+	previewPosition string            // "top" | "bottom" | "left" | "right" | "none"
+	previewCfg      PreviewConfig     // configurable preview command (see config.go)
+	showScore       bool              // whether to display zoxide score in list rows
 	bindings        []Binding         // keybind definitions (for hint rendering)
 	keymap          map[string]Action // key string → action (for dispatch)
 	maxNameLen      int               // socket-path-aware cap on session names (for rebuilds)
@@ -81,10 +81,10 @@ func newModel(items []Item, cfg Config) model {
 		previews:        make(map[Item]string),
 		previewCfg:      cfg.Preview,
 		showScore:       cfg.ShowScore,
-		bindings:    defaultBindings,
-		keymap:      keyToAction(defaultBindings),
-		maxNameLen:  maxNameLen(),
-		pathAliases: cfg.PathAliases,
+		bindings:        defaultBindings,
+		keymap:          keyToAction(defaultBindings),
+		maxNameLen:      maxNameLen(),
+		pathAliases:     cfg.PathAliases,
 	}
 }
 

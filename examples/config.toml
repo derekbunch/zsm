@@ -1,0 +1,66 @@
+# zsm reads this file from ~/.config/zsm/config.toml.
+
+# Zellij layout used when creating a new session.
+layout = "zjstatus"
+
+# Maximum visible rows in the session list.
+# Set to 0 to fill the available terminal height.
+height = 15
+
+# Maximum UI width in columns.
+# Set to 0 to fill the available terminal width.
+width = 0
+
+# Preview placement: "right", "left", "top", "bottom", or "none".
+preview_position = "right"
+
+# Show zoxide frecency scores in the list.
+show_score = true
+
+# Ordered path prefix rewrites for display names when directory basenames collide.
+# Put more specific prefixes first.
+# path_aliases = [
+#   ["/Users/you/work", "~work"],
+#   ["/Users/you", "~"],
+# ]
+
+[preview]
+# Directory preview command. The target directory is appended as the final arg.
+command = "eza"
+options = ["-T", "-L2", "--color=always", "--icons=always"]
+ignore_flag = "-I"
+ignore_separator = "|"
+ignore = [
+  ".git",
+  "node_modules",
+  "__pycache__",
+  ".venv",
+  ".mypy_cache",
+  ".pytest_cache",
+  ".ruff_cache",
+  ".DS_Store",
+]
+
+[theme.dark]
+active = "#a9b665"
+dir = "#7daea3"
+selected = "#504945"
+dim = "#767676"
+bg = "#1d2021"
+text = "#ebdbb2"
+accent = "#89b482"
+warning = "#d8a657"
+danger = "#ea6962"
+exited = "#928374"
+
+[theme.light]
+active = "#6c782e"
+dir = "#45707a"
+selected = "#ebdbb2"
+dim = "#928374"
+bg = "#fbf1c7"
+text = "#3c3836"
+accent = "#4c7a5d"
+warning = "#b57614"
+danger = "#c14a4a"
+exited = "#7c6f64"

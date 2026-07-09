@@ -1,1 +1,19 @@
-vendor
+# Dependencies are resolved through go.mod/go.sum.
+vendor/
+
+# Local build artifacts.
+zsm
+dist/
+build/
+*.out
+*.test
+coverage.*
+
+# Local editor/OS noise.
+.DS_Store
+.idea/
+.vscode/
+
+# Local debug logs and caches.
+*.log
+.cache/
