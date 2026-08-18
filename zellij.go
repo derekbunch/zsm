@@ -57,20 +57,33 @@ func createSession(name, dir, layout string) error {
 	}
 
 	if os.Getenv("ZELLIJ") != "" {
-		// switch-session creates the session if it doesn't exist
 		args := []string{"action", "switch-session", name}
 		if dir != "" {
 			args = append(args, "--cwd", dir)
 		}
 		args = append(args, "--layout", orDefault(layout, "zjstatus"))
-		_, err := zellij(args...)
-		return err
+		if _, err := zellij(args...); err == nil {
+			return nil
+		} else if !isSessionNotFound(err) {
+			return err
+		}
+
+		// Zellij 0.44 no longer creates missing sessions via switch-session.
+		// Detach this client, then replace zsm with a normal Zellij create.
+		if _, err := zellij("action", "detach"); err != nil {
+			return err
+		}
+		return becomeNewSession(name, layout)
 	}
 
+	return becomeNewSession(name, layout)
+}
+
+func becomeNewSession(name, layout string) error {
 	if layout != "" {
-		return becomeZellij("-s", name, "-l", layout)
+		return becomeZellijClean("-s", name, "-l", layout)
 	}
-	return becomeZellij("attach", "-c", name)
+	return becomeZellijClean("attach", "-c", name)
 }
 
 // deleteSession fully removes a zellij session (live or resurrectable).
@@ -123,8 +136,12 @@ func dumpLayout(sessionName string, exited bool) (string, error) {
 
 // zellij runs a zellij command as a subprocess and returns its output.
 func zellij(args ...string) (string, error) {
-	out, err := exec.Command("zellij", args...).Output()
+	out, err := exec.Command("zellij", args...).CombinedOutput()
 	if err != nil {
+		msg := strings.TrimSpace(string(out))
+		if msg != "" {
+			return "", fmt.Errorf("zellij %s: %w: %s", args[0], err, msg)
+		}
 		return "", fmt.Errorf("zellij %s: %w", args[0], err)
 	}
 	return string(out), nil
@@ -139,6 +156,25 @@ func becomeZellij(args ...string) error {
 	return syscall.Exec(bin, append([]string{"zellij"}, args...), os.Environ())
 }
 
+func becomeZellijClean(args ...string) error {
+	bin, err := exec.LookPath("zellij")
+	if err != nil {
+		return fmt.Errorf("zellij not found: %w", err)
+	}
+	return syscall.Exec(bin, append([]string{"zellij"}, args...), withoutZellijEnv(os.Environ()))
+}
+
+func withoutZellijEnv(env []string) []string {
+	out := env[:0]
+	for _, kv := range env {
+		if strings.HasPrefix(kv, "ZELLIJ=") || strings.HasPrefix(kv, "ZELLIJ_SESSION_NAME=") {
+			continue
+		}
+		out = append(out, kv)
+	}
+	return out
+}
+
 func splitLines(s string) []string {
 	var lines []string
 	for _, line := range strings.Split(strings.TrimSpace(s), "\n") {
@@ -147,6 +183,10 @@ func splitLines(s string) []string {
 		}
 	}
 	return lines
+}
+
+func isSessionNotFound(err error) bool {
+	return strings.Contains(err.Error(), "not found")
 }
 
 func orDefault(s, fallback string) string {

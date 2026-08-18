@@ -831,7 +831,7 @@ func (m model) listHeight() int {
 func attachOrCreate(item Item, layout string) func() error {
 	return func() error {
 		name := item.SessionName()
-		if item.Active {
+		if item.Active || item.Exited {
 			return attachSession(name)
 		}
 		return createSession(name, item.Dir, layout)

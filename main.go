@@ -63,6 +63,8 @@ func main() {
 		verb := "creating"
 		if item.Active {
 			verb = "attaching to"
+		} else if item.Exited {
+			verb = "resurrecting"
 		}
 		fmt.Fprintf(os.Stderr, "zsm: %s session %q", verb, item.SessionName())
 		if item.Dir != "" {
